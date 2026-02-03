@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as componentAuth from "../componentAuth.js";
 import type * as fomsRequests from "../fomsRequests.js";
 import type * as fomsStatus from "../fomsStatus.js";
 import type * as myFunctions from "../myFunctions.js";
@@ -19,6 +20,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  componentAuth: typeof componentAuth;
   fomsRequests: typeof fomsRequests;
   fomsStatus: typeof fomsStatus;
   myFunctions: typeof myFunctions;

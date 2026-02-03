@@ -49,6 +49,10 @@ Styling is done with **Tailwind CSS v4** via `@tailwindcss/vite`. Global styles 
 - **`bun run lint`** – Type-check and ESLint.
 - **`bun run format`** – Prettier format.
 
+## Deploy to Netlify
+
+The app is configured for Netlify (TanStack Start + Convex). See **[docs/NETLIFY_DEPLOY.md](docs/NETLIFY_DEPLOY.md)** for build settings, `CONVEX_DEPLOY_KEY`, and optional deploy previews.
+
 ## Adding shadcn components
 
 ```bash

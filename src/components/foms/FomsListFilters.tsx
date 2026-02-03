@@ -42,13 +42,14 @@ export function FomsListFilters({
 }: FomsListFiltersProps) {
   return (
     <section
-      className="space-y-4 rounded-lg border bg-card p-4"
+      className="min-w-0 space-y-4 rounded-lg border bg-card p-4"
       aria-label="Filters"
     >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="space-y-2">
+      <div className="grid min-w-0 gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="space-y-2 min-w-0">
           <Label htmlFor="foms-search">Search</Label>
           <Input
+            className="w-full min-w-0"
             id="foms-search"
             type="search"
             placeholder="Search requests…"
@@ -63,7 +64,7 @@ export function FomsListFilters({
             Debounced; searches requestor, facility, description, contact.
           </p>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 min-w-0">
           <Label htmlFor="filter-status">Status</Label>
           <Select
             value={statusId ?? 'all'}
@@ -82,20 +83,22 @@ export function FomsListFilters({
             </SelectContent>
           </Select>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 min-w-0">
           <Label htmlFor="date-from">From date</Label>
           <Input
             id="date-from"
             type="date"
+            className="min-w-0"
             value={dateFrom}
             onChange={(e) => onDateFromChange(e.target.value)}
           />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 min-w-0">
           <Label htmlFor="date-to">To date</Label>
           <Input
             id="date-to"
             type="date"
+            className="min-w-0"
             value={dateTo}
             onChange={(e) => onDateToChange(e.target.value)}
           />

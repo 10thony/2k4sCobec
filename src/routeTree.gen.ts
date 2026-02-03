@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AnotherPageRouteImport } from './routes/anotherPage'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as FomsRouteRouteImport } from './routes/foms/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FomsIndexRouteImport } from './routes/foms/index'
@@ -19,6 +20,11 @@ import { Route as FomsRequestIdRouteImport } from './routes/foms/$requestId'
 const AnotherPageRoute = AnotherPageRouteImport.update({
   id: '/anotherPage',
   path: '/anotherPage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FomsRouteRoute = FomsRouteRouteImport.update({
@@ -50,6 +56,7 @@ const FomsRequestIdRoute = FomsRequestIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/foms': typeof FomsRouteRouteWithChildren
+  '/admin': typeof AdminRoute
   '/anotherPage': typeof AnotherPageRoute
   '/foms/$requestId': typeof FomsRequestIdRoute
   '/foms/create': typeof FomsCreateRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/anotherPage': typeof AnotherPageRoute
   '/foms/$requestId': typeof FomsRequestIdRoute
   '/foms/create': typeof FomsCreateRoute
@@ -66,6 +74,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/foms': typeof FomsRouteRouteWithChildren
+  '/admin': typeof AdminRoute
   '/anotherPage': typeof AnotherPageRoute
   '/foms/$requestId': typeof FomsRequestIdRoute
   '/foms/create': typeof FomsCreateRoute
@@ -76,16 +85,24 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/foms'
+    | '/admin'
     | '/anotherPage'
     | '/foms/$requestId'
     | '/foms/create'
     | '/foms/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/anotherPage' | '/foms/$requestId' | '/foms/create' | '/foms'
+  to:
+    | '/'
+    | '/admin'
+    | '/anotherPage'
+    | '/foms/$requestId'
+    | '/foms/create'
+    | '/foms'
   id:
     | '__root__'
     | '/'
     | '/foms'
+    | '/admin'
     | '/anotherPage'
     | '/foms/$requestId'
     | '/foms/create'
@@ -95,6 +112,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FomsRouteRoute: typeof FomsRouteRouteWithChildren
+  AdminRoute: typeof AdminRoute
   AnotherPageRoute: typeof AnotherPageRoute
 }
 
@@ -105,6 +123,13 @@ declare module '@tanstack/react-router' {
       path: '/anotherPage'
       fullPath: '/anotherPage'
       preLoaderRoute: typeof AnotherPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/foms': {
@@ -164,6 +189,7 @@ const FomsRouteRouteWithChildren = FomsRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FomsRouteRoute: FomsRouteRouteWithChildren,
+  AdminRoute: AdminRoute,
   AnotherPageRoute: AnotherPageRoute,
 }
 export const routeTree = rootRouteImport

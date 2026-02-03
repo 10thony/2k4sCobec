@@ -1,5 +1,11 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { usePaginatedQuery, useQuery, useMutation } from 'convex/react'
+import {
+  usePaginatedQuery,
+  useQuery,
+  useMutation,
+  Authenticated,
+  Unauthenticated,
+} from 'convex/react'
 import { useEffect, useMemo, useState } from 'react'
 import { api } from '../../../convex/_generated/api'
 import type { Id } from '../../../convex/_generated/dataModel'
@@ -57,6 +63,9 @@ function FomsListPage() {
 
   const statuses = useQuery(api.fomsStatus.listFomsStatuses, {})
   const updateStatus = useMutation(api.fomsRequests.updateFomsRequestStatus)
+  const seedMock = useMutation(api.fomsRequests.seedMockFomsRequests)
+  const [seedMessage, setSeedMessage] = useState<string | null>(null)
+  const [seedLoading, setSeedLoading] = useState(false)
 
   useEffect(() => {
     const id = setTimeout(() => setSearchQuery(searchInput), SEARCH_DEBOUNCE_MS)
@@ -105,11 +114,39 @@ function FomsListPage() {
   const showLoadMore =
     paginationStatus === 'CanLoadMore' || paginationStatus === 'LoadingMore'
 
+  const handleSeedMock = async () => {
+    setSeedMessage(null)
+    setSeedLoading(true)
+    try {
+      const { inserted } = await seedMock({})
+      setSeedMessage(`Generated ${inserted} mock requests.`)
+    } catch (e) {
+      setSeedMessage(e instanceof Error ? e.message : 'Failed to generate mock data.')
+    } finally {
+      setSeedLoading(false)
+    }
+  }
+
   return (
-    <main className="p-6 space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">FOMS Requests</h1>
-        <nav className="flex gap-3">
+    <main className="min-w-0 max-w-full p-4 space-y-6 sm:p-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between min-w-0">
+        <h1 className="text-xl font-semibold tracking-tight sm:text-2xl shrink-0">FOMS Requests</h1>
+        <nav className="flex flex-wrap items-center gap-2 sm:gap-3 min-w-0">
+          <Authenticated>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleSeedMock}
+              disabled={seedLoading}
+            >
+              {seedLoading ? 'Generating…' : 'Generate mock data'}
+            </Button>
+          </Authenticated>
+          <Unauthenticated>
+            <span className="text-muted-foreground text-sm">
+              Sign in to generate mock data
+            </span>
+          </Unauthenticated>
           <Button asChild variant="default" size="sm">
             <Link to="/foms/create">New request</Link>
           </Button>
@@ -118,6 +155,18 @@ function FomsListPage() {
           </Button>
         </nav>
       </div>
+
+      {seedMessage !== null && (
+        <p
+          className={
+            seedMessage.startsWith('Generated')
+              ? 'text-muted-foreground text-sm'
+              : 'text-destructive text-sm'
+          }
+        >
+          {seedMessage}
+        </p>
+      )}
 
       <FomsListFilters
         searchInput={searchInput}
@@ -143,7 +192,7 @@ function FomsListPage() {
       ) : (
         <>
           <ul
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid min-w-0 gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
             style={{ viewTransitionName: 'foms-grid' }}
           >
             {page.map((item, i) => (

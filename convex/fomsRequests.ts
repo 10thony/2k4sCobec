@@ -1,5 +1,6 @@
 import { paginationOptsValidator } from "convex/server";
 import { query, mutation } from "./_generated/server";
+import { api } from "./_generated/api";
 import { v } from "convex/values";
 import type { Doc } from "./_generated/dataModel";
 
@@ -224,6 +225,121 @@ export const createFomsRequest = mutation({
       searchText,
     });
     return id;
+  },
+});
+
+/** Mock data for seeding: at least 5 requests per status (R, D, C, A). Auth required. */
+const MOCK_REQUESTOR_NAMES = [
+  "Jane Smith",
+  "Marcus Chen",
+  "Elena Rodriguez",
+  "David Park",
+  "Sarah Williams",
+];
+const MOCK_ORGS = [
+  "North Valley EMS",
+  "Metro Fire Rescue",
+  "County Emergency Services",
+  "Rural Health Coalition",
+  "City Fire Dept",
+];
+const MOCK_FACILITIES = [
+  "Memorial Hospital ER",
+  "Valley Medical Center",
+  "Central Trauma Unit",
+  "Westside Urgent Care",
+  "Regional Health ER",
+];
+const MOCK_DESCRIPTIONS = [
+  "After-hours facility access for equipment pickup",
+  "Scheduled training session in main bay",
+  "Emergency drill coordination",
+  "Quarterly inspection and maintenance",
+  "Night shift handoff and supply restock",
+];
+const MOCK_CONTACTS = [
+  "Dr. Amy Foster",
+  "Nurse James Lee",
+  "Ops Manager Kate Brown",
+  "Shift Lead Tom Davis",
+  "Admin Maria Garcia",
+];
+const MOCK_PHONE = "(555) 123-4567";
+const MOCK_DFL_CODES = ["DFL-100", "DFL-101", undefined, "DFL-102", undefined];
+const MOCK_DENIAL_REASONS = [
+  "Insufficient documentation provided.",
+  "Requested time slot not available.",
+  "Facility at capacity for that date.",
+  "Required approval from medical director missing.",
+  "Duplicate request on file.",
+];
+
+function buildMockFomsRequest(
+  statusId: string,
+  index: number,
+  now: number
+): Omit<Doc<"fomsRequests">, "_id" | "_creationTime"> {
+  const i = index % MOCK_REQUESTOR_NAMES.length;
+  const requestorName = MOCK_REQUESTOR_NAMES[i]!;
+  const requestorOrg = MOCK_ORGS[i]!;
+  const facility = MOCK_FACILITIES[i]!;
+  const description = MOCK_DESCRIPTIONS[i]!;
+  const contact = MOCK_CONTACTS[i]!;
+  const dflCode = MOCK_DFL_CODES[i];
+  const requestedDatetime = now - (index + statusId.charCodeAt(0)) * 3600000;
+  const doc = {
+    createDatetime: now - index * 60000,
+    dflCode,
+    requestedDatetime,
+    requestorName,
+    requestorOrg,
+    requestorPhone: MOCK_PHONE,
+    restoration: index % 2 === 0 ? "Yes" : undefined,
+    scheduled: index % 2 === 1 ? "No" : undefined,
+    contact,
+    statusId,
+    description,
+    facility,
+    deniedDescription:
+      statusId === "D" ? MOCK_DENIAL_REASONS[i] : undefined,
+    pocPhone: MOCK_PHONE,
+  };
+  const searchText = buildSearchText({
+    ...doc,
+    deniedDescription: doc.deniedDescription,
+  });
+  return { ...doc, searchText };
+}
+
+/**
+ * Seed mock FOMS requests for development: at least 5 per status (R, D, C, A).
+ * Requires authenticated user.
+ */
+export const seedMockFomsRequests = mutation({
+  args: {},
+  returns: v.object({ inserted: v.number() }),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Unauthorized: must be signed in to generate mock data.");
+    }
+    let statusRows = await ctx.db.query("fomsStatus").collect();
+    if (statusRows.length === 0) {
+      await ctx.runMutation(api.fomsStatus.seedFomsStatus, {});
+      statusRows = await ctx.db.query("fomsStatus").collect();
+    }
+    const statusIds = statusRows.map((s) => s.statusId);
+    const now = Date.now();
+    let inserted = 0;
+    const countPerStatus = 5;
+    for (const statusId of statusIds) {
+      for (let i = 0; i < countPerStatus; i++) {
+        const doc = buildMockFomsRequest(statusId, inserted + i, now);
+        await ctx.db.insert("fomsRequests", doc);
+        inserted++;
+      }
+    }
+    return { inserted };
   },
 });
 

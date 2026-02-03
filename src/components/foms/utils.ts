@@ -25,15 +25,17 @@ export function statusBadgeVariant(statusId: string): FomsStatusBadgeVariant {
   }
 }
 
+/** Format date+time as MM/DD/YYYY, H:MM AM/PM (medium date, short time). */
 export function formatFomsDate(ms: number): string {
-  return new Date(ms).toLocaleDateString(undefined, {
-    dateStyle: 'medium',
+  return new Date(ms).toLocaleString(undefined, {
+    dateStyle: 'short',
     timeStyle: 'short',
   })
 }
 
+/** Format date+time with full date and short time. */
 export function formatFomsDateLong(ms: number): string {
-  return new Date(ms).toLocaleDateString(undefined, {
+  return new Date(ms).toLocaleString(undefined, {
     dateStyle: 'full',
     timeStyle: 'short',
   })

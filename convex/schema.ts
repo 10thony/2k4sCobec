@@ -11,6 +11,11 @@ export default defineSchema({
     value: v.string(),
   }).index("by_statusId", ["statusId"]),
 
+  componentAuthSettings: defineTable({
+    routePath: v.string(),
+    requireAuth: v.boolean(),
+  }).index("by_routePath", ["routePath"]),
+
   fomsRequests: defineTable({
     createDatetime: v.number(),
     dflCode: v.optional(v.string()),

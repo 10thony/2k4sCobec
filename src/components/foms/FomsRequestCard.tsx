@@ -28,42 +28,43 @@ export function FomsRequestCard({
 
   return (
     <li
-      className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300"
+      className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300 min-w-0"
       style={{ animationDelay: `${index * 30}ms`, animationFillMode: 'backwards' }}
     >
-      <Card className="flex h-full flex-col transition-shadow hover:shadow-md">
-        <CardHeader className="flex flex-row items-start justify-between gap-2 pb-2">
-          <CardTitle className="text-base">
+      <Card className="flex h-full min-w-0 flex-col transition-shadow hover:shadow-md overflow-hidden">
+        <CardHeader className="flex flex-row items-start justify-between gap-2 pb-2 min-w-0 shrink-0">
+          <CardTitle className="text-base min-w-0">
             <Link
               to="/foms/$requestId"
               params={{ requestId: item._id }}
-              className="hover:underline focus:ring-2 focus:ring-ring rounded"
+              title={item._id}
+              className="hover:underline focus:ring-2 focus:ring-ring rounded block min-w-0 truncate"
             >
               RMLS ID: {item._id}
             </Link>
           </CardTitle>
-          <Badge variant={statusBadgeVariant(item.statusId)}>
+          <Badge variant={statusBadgeVariant(item.statusId)} className="shrink-0">
             {item.statusValue}
           </Badge>
         </CardHeader>
-        <CardContent className="flex-1 space-y-1 text-sm">
-          <p>
-            <span className="text-muted-foreground">Requestor:</span>{' '}
+        <CardContent className="flex-1 space-y-1 text-sm min-w-0 overflow-hidden">
+          <p className="min-w-0 break-words">
+            <span className="text-muted-foreground shrink-0">Requestor:</span>{' '}
             {item.requestorName}
           </p>
-          <p>
-            <span className="text-muted-foreground">Facility:</span>{' '}
+          <p className="min-w-0 break-words">
+            <span className="text-muted-foreground shrink-0">Facility:</span>{' '}
             {item.facility}
           </p>
-          <p>
+          <p className="min-w-0">
             <span className="text-muted-foreground">Requested:</span>{' '}
             {formatFomsDate(item.requestedDatetime)}
           </p>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground min-w-0 break-words line-clamp-2">
             {truncate(item.description, 80)}
           </p>
         </CardContent>
-        <CardFooter className="flex flex-wrap gap-2 border-t pt-4">
+        <CardFooter className="flex flex-wrap gap-2 border-t pt-4 shrink-0">
           <Button asChild variant="outline" size="sm">
             <Link to="/foms/$requestId" params={{ requestId: item._id }}>
               View details
