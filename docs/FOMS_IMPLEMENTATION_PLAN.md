@@ -212,7 +212,61 @@ Apply the frontend design skill for all FOMS UI (list, card, form, detail, modal
 
 ---
 
-## 8. Implementation Order
+## 8. Implementation Status (Work Performed)
+
+This section records what has been implemented to date. Progress is documented in `docs/ConvexDataModelBackend8_1_inprogress.txt` and `docs/FomsRoutesAndLayouts8_2.txt`.
+
+### 8.1 Convex Data Model & Backend (§9 step 1) — **DONE**
+
+**Reference**: `docs/ConvexDataModelBackend8_1_inprogress.txt`
+
+- **Schema** (`convex/schema.ts`):
+  - **fomsStatus**: `statusId`, `value`; index `by_statusId`.
+  - **fomsRequests**: All planned fields (createDatetime, dflCode, requestedDatetime, requestorName, requestorOrg, requestorPhone, restoration, scheduled, contact, statusId, description, facility, deniedDescription, pocPhone); optional `searchText` for full-text search.
+  - **Indexes**: `by_statusId`, `by_requestedDatetime`, `by_createDatetime`, `by_statusId_and_requestedDatetime`.
+  - **Search index**: `search_foms` with `searchField: "searchText"`, `filterFields: ["statusId"]`.
+- **convex/fomsStatus.ts**:
+  - `listFomsStatuses`: query, no args; returns all status rows.
+  - `seedFomsStatus`: public mutation, no args; idempotent insert of R-Requested, D-Denied, C-Cancelled, A-Approved.
+- **convex/fomsRequests.ts**:
+  - `listFomsRequests`: query with paginationOpts, optional statusId, dateFrom, dateTo, searchQuery; uses search index when searchQuery is present, otherwise field indexes; returns `{ page, isDone, continueCursor }` with `statusValue` per item.
+  - `getFomsRequest`: query by id; returns single request with statusValue or null.
+  - `createFomsRequest`: mutation with required/optional args; sets statusId `"R"`, createDatetime, and searchText.
+  - `updateFomsRequestStatus`: mutation (id, statusId, optional deniedDescription); requires auth (Clerk); denies require deniedDescription; patches doc and updates searchText when denied.
+- **Verification**: `bunx convex dev --once` passes; all functions use `args` and `returns` validators.
+- **Pending**: Run `seedFomsStatus` once (Convex dashboard or app) to populate status rows.
+
+### 8.2 Routes & Layout (§9 step 2) — **DONE**
+
+**Reference**: `docs/FomsRoutesAndLayouts8_2.txt`
+
+- **FOMS route structure** (TanStack Router file-based):
+  - `src/routes/foms/route.tsx`: Layout for `/foms`; renders `<Outlet />` for child routes.
+  - `src/routes/foms/index.tsx`: FOMS list at `/foms`; placeholder content + links to `/foms/new` and `/`.
+  - `src/routes/foms/new.tsx`: New request at `/foms/new`; placeholder + links to `/foms` and `/`.
+  - `src/routes/foms/$requestId.tsx`: Detail at `/foms/:requestId`; uses `Route.useParams()` for `requestId`; placeholder + nav links.
+- **Root layout** (`src/routes/__root.tsx`):
+  - `<nav>` with `Link`: "2k4sCobec" (to `/`), "FOMS" (to `/foms`), "New request" (to `/foms/new`).
+  - Header: flex, nav left, `UserButton` right; auth wrappers (Authenticated / Unauthenticated / AuthLoading).
+- **Verification**: `bun run build` succeeded; route tree includes FomsRouteRoute, FomsIndexRoute, FomsNewRoute, FomsRequestIdRoute.
+
+### 8.3 Create Flow (§9 step 3) — **DONE**
+
+**Reference**: `docs/inprogress.txt` (Create Flow task)
+
+- **Create form** (`src/routes/foms/new.tsx`): Zod schema + react-hook-form with zodResolver; required fields (requestorName, requestorOrg, requestorPhone, facility, description, requestedDatetime, contact, pocPhone); optional dflCode, restoration, scheduled. Native `datetime-local` for requestedDatetime (converted to ms on submit). `useMutation(api.fomsRequests.createFomsRequest)`; on success, redirect to `/foms/$requestId`. Field-level and submit-level errors; Card layout with grouped sections.
+- **Verification**: `bun run build` and `bunx convex dev --once` pass.
+
+### 8.4 Remaining (per §9) — **DONE**
+
+- **Step 4 — List & search/filters**: Grid and cards on `foms/index.tsx`; `usePaginatedQuery(api.fomsRequests.listFomsRequests)` with debounced search (300 ms), quick filters (status Select, date from/to); Clear filters; Load more.
+- **Step 5 — Detail page**: `foms/$requestId.tsx` wired to `getFomsRequest`; read-only view of all fields (RMLS ID, create/requested datetime, requestor, facility, description, status, contact, POC phone, optional fields, denied description).
+- **Step 6 — Approve/deny**: Approve and Deny buttons on cards when `statusId === "R"`; Deny opens Dialog for denial reason; `updateFomsRequestStatus` for approve (`"A"`) and deny (`"D"`, with `deniedDescription`).
+- **Step 7 — Polish**: DM Sans font in `app.css`; status Badge variants (requested, approved, denied, cancelled); card stagger animation; focus-visible ring for a11y; create route at `/foms/new` (new.tsx); shadcn Badge, Dialog, Select added.
+
+---
+
+## 9. Implementation Order (original plan)
 
 1. **Convex**
    - Update `convex/schema.ts`: `fomsStatus`, `fomsRequests` and indexes including search index.
@@ -246,24 +300,25 @@ Apply the frontend design skill for all FOMS UI (list, card, form, detail, modal
 
 ---
 
-## 9. Verification Checklist
+## 10. Verification Checklist
 
-- [ ] Schema and functions: `bunx convex dev --once` passes.
-- [ ] All Convex functions have `args` and `returns` validators; no `filter` in queries; indexes used.
-- [ ] Required fields enforced on create (client + server); RMLS ID never input, only displayed.
-- [ ] FOMS list shows status on each card; only Requested cards show approve/deny; deny opens modal and sets `deniedDescription`.
-- [ ] Keyword search and quick filters (date, status) work and use indexes/search index.
-- [ ] Detail page is read-only and reachable from list within 3 clicks.
-- [ ] 3-click rule satisfied from any authenticated FOMS screen.
-- [ ] UI follows FRONTENDDESIGNSKILL.MD (distinctive typography, color, motion, no generic AI look).
-- [ ] shadcn components added via CLI; styling with Tailwind and `cn()`.
+- [x] Schema and functions: `bunx convex dev --once` passes.
+- [x] All Convex functions have `args` and `returns` validators; no `filter` in queries; indexes used.
+- [x] Required fields enforced on create (client + server); RMLS ID never input, only displayed.
+- [x] FOMS list shows status on each card; only Requested cards show approve/deny; deny opens modal and sets `deniedDescription`.
+- [x] Keyword search and quick filters (date, status) work and use indexes/search index.
+- [x] Detail page is read-only and reachable from list within 3 clicks.
+- [x] 3-click rule satisfied from any authenticated FOMS screen (routes and nav in place).
+- [x] UI follows FRONTENDDESIGNSKILL.MD (distinctive typography, color, motion, no generic AI look).
+- [x] shadcn components added (Badge, Dialog, Select); styling with Tailwind and `cn()`.
 
 ---
 
-## 10. References
+## 11. References
 
 - User stories: [FOMS.MD](./FOMS.MD)
 - Stack & setup: [README.MD](../README.MD)
 - Agent rules: [AGENTS.md](./AGENTS.md)
 - Frontend design: [FRONTENDDESIGNSKILL.MD](./skills/FRONTENDDESIGNSKILL.MD)
 - Convex: `.cursor/rules/convex_rules.mdc`
+- Progress: [ConvexDataModelBackend8_1_inprogress.txt](./ConvexDataModelBackend8_1_inprogress.txt), [FomsRoutesAndLayouts8_2.txt](./FomsRoutesAndLayouts8_2.txt)

@@ -1,0 +1,48 @@
+================================================================================
+FOMS Implementation — Task: Create Flow (§8.3, Step 3)
+================================================================================
+Status: COMPLETED
+Started: 2025-02-02
+Reference: docs/FOMS_IMPLEMENTATION_PLAN.md §4 (User Story 1: Create FOMS Requests), §8 (Implementation Order step 3)
+
+--------------------------------------------------------------------------------
+TASK SCOPE
+--------------------------------------------------------------------------------
+Build the create form on foms/new.tsx with client-side validation and createFomsRequest mutation; redirect to the new request detail page on success.
+
+--------------------------------------------------------------------------------
+WORK DONE
+--------------------------------------------------------------------------------
+1. Dependencies
+   - Added zod, react-hook-form, @hookform/resolvers for form validation.
+   - Added shadcn components: button, input, label, card (via bunx shadcn@latest add).
+
+2. Create form (src/routes/foms/new.tsx)
+   - Zod schema (createFormSchema) matching backend createArgsValidator: required requestorName, requestorOrg, requestorPhone, facility, description, requestedDatetime, contact, pocPhone; optional dflCode, restoration, scheduled.
+   - react-hook-form with zodResolver for client-side validation; field-level and root (submit) error display; aria-invalid on inputs with errors.
+   - Sections: Requestor (name, org, phone), Facility & description, Contact (contact name, POC phone), Requested date & time (datetime-local → ms), Optional (dflCode, restoration, scheduled).
+   - useMutation(api.fomsRequests.createFomsRequest); on success, navigate to /foms/$requestId with the returned id. Optional fields only sent when non-empty (trim).
+   - requestedDatetime: native input type="datetime-local"; value converted to ms via new Date(value).getTime(); invalid date triggers setError for requestedDatetime.
+   - Card layout with CardHeader/Title/Description, CardContent (grouped fields), CardFooter (Create request + Cancel link). Nav links to FOMS list and Home retained.
+
+3. Verification
+   - bun run build: Succeeded.
+   - bunx convex dev --once: Convex functions ready.
+
+--------------------------------------------------------------------------------
+LEARNINGS
+--------------------------------------------------------------------------------
+- Convex useMutation from convex/react returns a promise; await it and use the returned Id<"fomsRequests"> for redirect. TanStack Router useNavigate({ to: '/foms/$requestId', params: { requestId: id } }) for programmatic navigation.
+- Zod + react-hook-form: use zodResolver(createFormSchema) and match schema to backend args (required/optional, types). For datetime, keep form value as string (datetime-local), convert to ms only on submit.
+- Backend createFomsRequest accepts requestorNumber as optional but does not store it in the doc; form omits it to avoid confusion (requestorPhone is the single required phone for requestor).
+- shadcn components live under src/components/ui when using ~/components alias; Convex API from project root: ../../../convex/_generated/api from src/routes/foms/new.tsx.
+
+--------------------------------------------------------------------------------
+NEXT STEPS (from FOMS plan §8)
+--------------------------------------------------------------------------------
+4. List & search/filters: Grid and cards on foms/index.tsx; listFomsRequests; search input + quick filters (date, status).
+5. Detail page: Wire getFomsRequest in foms/$requestId.tsx; read-only view of all fields.
+6. Approve/deny: Buttons on cards (status Requested only); denial modal; updateFomsRequestStatus.
+7. Polish: FRONTENDDESIGNSKILL.MD (typography, color, motion, a11y).
+
+================================================================================

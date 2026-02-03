@@ -17,6 +17,7 @@ Instructions for AI agents working in this repo.
 - **New UI components**: Add via `bunx shadcn@latest add <component>`, then import from `~/components/ui/<component>`.
 - **UX**: Make sure the application is always in compliant with the "3 click" rule where users can get anywhere in the app (as long as they are authenticated) within 3 clicks.
 -- **Data** all DateTimes must be stored in ms because of epoch but on the front end they must display as MM/DD/YYYY MIN:SEC
+-- **Code Convention**: All files must have declarative, concise, and eloquent names, that are easy to digest and self explanatory
 
 ## Verification
 

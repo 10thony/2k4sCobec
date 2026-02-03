@@ -3,15 +3,108 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─── Palette: Amethyst (primary dark-mode base) ─── */
+:root {
+  --color-dark-amethyst-50: #f3e5ff;
+  --color-dark-amethyst-100: #e6ccff;
+  --color-dark-amethyst-200: #ce99ff;
+  --color-dark-amethyst-300: #b566ff;
+  --color-dark-amethyst-400: #9c33ff;
+  --color-dark-amethyst-500: #8400ff;
+  --color-dark-amethyst-600: #6900cc;
+  --color-dark-amethyst-700: #4f0099;
+  --color-dark-amethyst-800: #350066;
+  --color-dark-amethyst-900: #1a0033;
+  --color-dark-amethyst-950: #120024;
+
+  --color-indigo-ink-50: #f3e7fd;
+  --color-indigo-ink-100: #e6d0fb;
+  --color-indigo-ink-200: #cda1f7;
+  --color-indigo-ink-300: #b571f4;
+  --color-indigo-ink-400: #9c42f0;
+  --color-indigo-ink-500: #8313ec;
+  --color-indigo-ink-600: #690fbd;
+  --color-indigo-ink-700: #4f0b8e;
+  --color-indigo-ink-800: #34085e;
+  --color-indigo-ink-900: #1a042f;
+  --color-indigo-ink-950: #120321;
+
+  --color-indigo-velvet-50: #f2e9fc;
+  --color-indigo-velvet-100: #e5d3f8;
+  --color-indigo-velvet-200: #cca7f1;
+  --color-indigo-velvet-300: #b27bea;
+  --color-indigo-velvet-400: #994fe3;
+  --color-indigo-velvet-500: #7f22dd;
+  --color-indigo-velvet-600: #661cb0;
+  --color-indigo-velvet-700: #4c1584;
+  --color-indigo-velvet-800: #330e58;
+  --color-indigo-velvet-900: #19072c;
+  --color-indigo-velvet-950: #12051f;
+
+  --color-royal-violet-50: #f3eafa;
+  --color-royal-violet-100: #e7d5f6;
+  --color-royal-violet-200: #ceacec;
+  --color-royal-violet-300: #b682e3;
+  --color-royal-violet-400: #9d59d9;
+  --color-royal-violet-500: #852fd0;
+  --color-royal-violet-600: #6a26a6;
+  --color-royal-violet-700: #501c7d;
+  --color-royal-violet-800: #351353;
+  --color-royal-violet-900: #1b092a;
+  --color-royal-violet-950: #13071d;
+
+  --color-lavender-purple-50: #f3eafb;
+  --color-lavender-purple-100: #e7d4f7;
+  --color-lavender-purple-200: #cfa9ef;
+  --color-lavender-purple-300: #b87ee7;
+  --color-lavender-purple-400: #a054de;
+  --color-lavender-purple-500: #8829d6;
+  --color-lavender-purple-600: #6d21ab;
+  --color-lavender-purple-700: #521881;
+  --color-lavender-purple-800: #361056;
+  --color-lavender-purple-900: #1b082b;
+  --color-lavender-purple-950: #13061e;
+
+  --color-mauve-magic-50: #f4e5ff;
+  --color-mauve-magic-100: #e9ccff;
+  --color-mauve-magic-200: #d399ff;
+  --color-mauve-magic-300: #bd66ff;
+  --color-mauve-magic-400: #a733ff;
+  --color-mauve-magic-500: #9000ff;
+  --color-mauve-magic-600: #7400cc;
+  --color-mauve-magic-700: #570099;
+  --color-mauve-magic-800: #3a0066;
+  --color-mauve-magic-900: #1d0033;
+  --color-mauve-magic-950: #140024;
+
+  --color-mauve-50: #f6e5ff;
+  --color-mauve-100: #ecccff;
+  --color-mauve-200: #da99ff;
+  --color-mauve-300: #c766ff;
+  --color-mauve-400: #b433ff;
+  --color-mauve-500: #a200ff;
+  --color-mauve-600: #8100cc;
+  --color-mauve-700: #610099;
+  --color-mauve-800: #410066;
+  --color-mauve-900: #200033;
+  --color-mauve-950: #170024;
+}
+
+/* FOMS: distinctive typography — DM Sans (loaded via head link in __root) */
 @layer base {
   html {
     @apply antialiased;
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
   }
   body {
     @apply min-h-screen bg-background text-foreground;
   }
   .using-mouse * {
     outline: none !important;
+  }
+  a:focus-visible,
+  button:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 }
 
@@ -91,38 +184,60 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Dark theme: indigo-velvet + mauve-magic — refined, non-generic dark mode */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: var(--color-indigo-velvet-950);
+  --foreground: var(--color-indigo-velvet-50);
+  --card: var(--color-indigo-velvet-900);
+  --card-foreground: var(--color-indigo-velvet-50);
+  --popover: var(--color-indigo-velvet-900);
+  --popover-foreground: var(--color-indigo-velvet-50);
+  --primary: var(--color-mauve-magic-400);
+  --primary-foreground: var(--color-indigo-velvet-950);
+  --secondary: var(--color-indigo-velvet-800);
+  --secondary-foreground: var(--color-indigo-velvet-100);
+  --muted: var(--color-indigo-velvet-800);
+  --muted-foreground: var(--color-indigo-velvet-300);
+  --accent: var(--color-indigo-velvet-800);
+  --accent-foreground: var(--color-indigo-velvet-100);
+  --destructive: oklch(0.65 0.22 25);
+  --border: var(--color-indigo-velvet-700);
+  --input: var(--color-indigo-velvet-800);
+  --ring: var(--color-mauve-magic-400);
+  --chart-1: var(--color-mauve-magic-400);
+  --chart-2: var(--color-indigo-velvet-400);
+  --chart-3: var(--color-royal-violet-400);
+  --chart-4: var(--color-lavender-purple-400);
+  --chart-5: var(--color-dark-amethyst-400);
+  --sidebar: var(--color-indigo-velvet-900);
+  --sidebar-foreground: var(--color-indigo-velvet-50);
+  --sidebar-primary: var(--color-mauve-magic-400);
+  --sidebar-primary-foreground: var(--color-indigo-velvet-950);
+  --sidebar-accent: var(--color-indigo-velvet-800);
+  --sidebar-accent-foreground: var(--color-indigo-velvet-100);
+  --sidebar-border: var(--color-indigo-velvet-700);
+  --sidebar-ring: var(--color-mauve-magic-400);
+}
+
+/* Atmospheric background for dark: subtle gradient mesh (no purple-on-white cliché) */
+.dark body {
+  background-image:
+    radial-gradient(
+      ellipse 120% 80% at 50% -20%,
+      var(--color-indigo-velvet-900) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 80% 50% at 100% 50%,
+      var(--color-mauve-magic-950) 0%,
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 0% 80%,
+      var(--color-indigo-ink-950) 0%,
+      transparent 45%
+    );
+  background-attachment: fixed;
 }
 
 @layer base {

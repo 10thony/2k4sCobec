@@ -1,5 +1,6 @@
 import {
   HeadContent,
+  Link,
   Outlet,
   Scripts,
   createRootRouteWithContext,
@@ -39,6 +40,19 @@ export const Route = createRootRouteWithContext<{
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.googleapis.com',
+      },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossOrigin: 'anonymous',
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap',
+      },
       {
         rel: 'apple-touch-icon',
         sizes: '180x180',
@@ -90,8 +104,27 @@ function RootComponent() {
       >
         <RootDocument>
           <Authenticated>
-            <header className="border-b border-border px-4 py-2 flex items-center justify-between">
-              <span className="font-medium">2k4sCobec</span>
+            <header className="border-b border-border px-4 py-2 flex items-center justify-between gap-4">
+              <nav className="flex items-center gap-4">
+                <Link
+                  to="/"
+                  className="font-medium text-foreground hover:text-primary transition-colors"
+                >
+                  2k4sCobec
+                </Link>
+                <Link
+                  to="/foms"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  FOMS
+                </Link>
+                <Link
+                  to="/foms/create"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  New request
+                </Link>
+              </nav>
               <UserButton afterSignOutUrl="/" />
             </header>
             <Outlet />
@@ -122,7 +155,7 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>

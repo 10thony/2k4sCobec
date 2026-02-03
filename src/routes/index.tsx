@@ -42,14 +42,14 @@ function Home() {
         </p>
         <p>
           Edit{' '}
-          <code className="text-sm font-bold font-mono bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded-md">
+          <code className="text-sm font-bold font-mono bg-muted text-foreground px-1 py-0.5 rounded-md">
             convex/myFunctions.ts
           </code>{' '}
           to change your backend
         </p>
         <p>
           Edit{' '}
-          <code className="text-sm font-bold font-mono bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded-md">
+          <code className="text-sm font-bold font-mono bg-muted text-foreground px-1 py-0.5 rounded-md">
             src/routes/index.tsx
           </code>{' '}
           to change your frontend
@@ -58,7 +58,7 @@ function Home() {
           Open{' '}
           <Link
             to="/anotherPage"
-            className="text-blue-600 underline hover:no-underline"
+            className="text-primary underline hover:no-underline decoration-primary/60"
           >
             another page
           </Link>{' '}
@@ -110,11 +110,11 @@ function ResourceCard({
   href: string
 }) {
   return (
-    <div className="flex flex-col gap-2 bg-slate-200 dark:bg-slate-800 p-4 rounded-md h-28 overflow-auto">
-      <a href={href} className="text-sm underline hover:no-underline">
+    <div className="flex flex-col gap-2 bg-card border border-border p-4 rounded-md h-28 overflow-auto">
+      <a href={href} className="text-sm text-primary underline hover:no-underline decoration-primary/60">
         {title}
       </a>
-      <p className="text-xs">{description}</p>
+      <p className="text-xs text-muted-foreground">{description}</p>
     </div>
   )
 }

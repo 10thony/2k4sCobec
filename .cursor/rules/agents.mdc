@@ -1,5 +1,5 @@
 ---
-description: Agent guidelines for this project — stack, conventions, and verification
+description: 
 alwaysApply: true
 ---
 
@@ -19,7 +19,9 @@ When working in this repo, follow the project’s **AGENTS.md** at the repo root
 
 - **Styling**: Tailwind utility classes; use `cn()` from `~/lib/utils` when merging classes. Global styles/theme in `src/styles/app.css`.
 - **Convex**: Follow `.cursor/rules/convex_rules.mdc` (schema, validators, function registration, etc.).
-- **shadcn**: Add components with `bunx shadcn@latest add <component>`, import from `~/components/ui/<component>`.
+- **shadcn**: Add components with `bunx shadcn@latest add <component>`, import from `~/components/ui/<component>`.- **UX**: Make sure the application is always in compliant with the "3 click" rule where users can get anywhere in the app (as long as they are authenticated) within 3 clicks.
+-- **Data** all DateTimes must be stored in ms because of epoch but on the front end they must display as MM/DD/YYYY MIN:SEC
+-- **Code Convention**: All files must have declarative, concise, and eloquent names, that are easy to digest and self explanatory
 
 ## Verification
 

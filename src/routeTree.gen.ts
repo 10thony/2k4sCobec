@@ -10,11 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AnotherPageRouteImport } from './routes/anotherPage'
+import { Route as FomsRouteRouteImport } from './routes/foms/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FomsIndexRouteImport } from './routes/foms/index'
+import { Route as FomsCreateRouteImport } from './routes/foms/create'
+import { Route as FomsRequestIdRouteImport } from './routes/foms/$requestId'
 
 const AnotherPageRoute = AnotherPageRouteImport.update({
   id: '/anotherPage',
   path: '/anotherPage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FomsRouteRoute = FomsRouteRouteImport.update({
+  id: '/foms',
+  path: '/foms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -22,30 +31,70 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FomsIndexRoute = FomsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => FomsRouteRoute,
+} as any)
+const FomsCreateRoute = FomsCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => FomsRouteRoute,
+} as any)
+const FomsRequestIdRoute = FomsRequestIdRouteImport.update({
+  id: '/$requestId',
+  path: '/$requestId',
+  getParentRoute: () => FomsRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/foms': typeof FomsRouteRouteWithChildren
   '/anotherPage': typeof AnotherPageRoute
+  '/foms/$requestId': typeof FomsRequestIdRoute
+  '/foms/create': typeof FomsCreateRoute
+  '/foms/': typeof FomsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/anotherPage': typeof AnotherPageRoute
+  '/foms/$requestId': typeof FomsRequestIdRoute
+  '/foms/create': typeof FomsCreateRoute
+  '/foms': typeof FomsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/foms': typeof FomsRouteRouteWithChildren
   '/anotherPage': typeof AnotherPageRoute
+  '/foms/$requestId': typeof FomsRequestIdRoute
+  '/foms/create': typeof FomsCreateRoute
+  '/foms/': typeof FomsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/anotherPage'
+  fullPaths:
+    | '/'
+    | '/foms'
+    | '/anotherPage'
+    | '/foms/$requestId'
+    | '/foms/create'
+    | '/foms/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/anotherPage'
-  id: '__root__' | '/' | '/anotherPage'
+  to: '/' | '/anotherPage' | '/foms/$requestId' | '/foms/create' | '/foms'
+  id:
+    | '__root__'
+    | '/'
+    | '/foms'
+    | '/anotherPage'
+    | '/foms/$requestId'
+    | '/foms/create'
+    | '/foms/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FomsRouteRoute: typeof FomsRouteRouteWithChildren
   AnotherPageRoute: typeof AnotherPageRoute
 }
 
@@ -58,6 +107,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnotherPageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/foms': {
+      id: '/foms'
+      path: '/foms'
+      fullPath: '/foms'
+      preLoaderRoute: typeof FomsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -65,11 +121,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/foms/': {
+      id: '/foms/'
+      path: '/'
+      fullPath: '/foms/'
+      preLoaderRoute: typeof FomsIndexRouteImport
+      parentRoute: typeof FomsRouteRoute
+    }
+    '/foms/create': {
+      id: '/foms/create'
+      path: '/create'
+      fullPath: '/foms/create'
+      preLoaderRoute: typeof FomsCreateRouteImport
+      parentRoute: typeof FomsRouteRoute
+    }
+    '/foms/$requestId': {
+      id: '/foms/$requestId'
+      path: '/$requestId'
+      fullPath: '/foms/$requestId'
+      preLoaderRoute: typeof FomsRequestIdRouteImport
+      parentRoute: typeof FomsRouteRoute
+    }
   }
 }
 
+interface FomsRouteRouteChildren {
+  FomsRequestIdRoute: typeof FomsRequestIdRoute
+  FomsCreateRoute: typeof FomsCreateRoute
+  FomsIndexRoute: typeof FomsIndexRoute
+}
+
+const FomsRouteRouteChildren: FomsRouteRouteChildren = {
+  FomsRequestIdRoute: FomsRequestIdRoute,
+  FomsCreateRoute: FomsCreateRoute,
+  FomsIndexRoute: FomsIndexRoute,
+}
+
+const FomsRouteRouteWithChildren = FomsRouteRoute._addFileChildren(
+  FomsRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FomsRouteRoute: FomsRouteRouteWithChildren,
   AnotherPageRoute: AnotherPageRoute,
 }
 export const routeTree = rootRouteImport

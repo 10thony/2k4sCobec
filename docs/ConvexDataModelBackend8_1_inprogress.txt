@@ -1,0 +1,72 @@
+================================================================================
+FOMS Implementation — Task: Convex Data Model & Backend (Implementation Order §8.1)
+================================================================================
+Status: IN PROGRESS (backend complete; frontend and seed run pending)
+Started: 2025-02-02
+Reference: docs/FOMS_IMPLEMENTATION_PLAN.md §2 (Data Model & Backend), §8 (Implementation Order step 1)
+
+--------------------------------------------------------------------------------
+TASK SCOPE
+--------------------------------------------------------------------------------
+Implement the Convex backend for FOMS (Field Operations Management System):
+1. Schema: fomsStatus and fomsRequests tables with indexes and full-text search.
+2. Seed: Idempotent population of fomsStatus (R, D, C, A).
+3. Functions: listFomsStatuses, listFomsRequests, getFomsRequest, createFomsRequest, updateFomsRequestStatus.
+
+This is the highest-priority task because all FOMS UI (list, create, detail, approve/deny) depends on it.
+
+--------------------------------------------------------------------------------
+WORK DONE
+--------------------------------------------------------------------------------
+1. convex/schema.ts
+   - fomsStatus: statusId (string), value (string); index by_statusId.
+   - fomsRequests: All fields from plan (§2.1): createDatetime, dflCode (optional), requestedDatetime, requestorName, requestorOrg, requestorPhone, restoration, scheduled, contact, statusId, description, facility, deniedDescription, pocPhone; added optional searchText for full-text search.
+   - Indexes: by_statusId, by_requestedDatetime, by_createDatetime, by_statusId_and_requestedDatetime.
+   - Search index: search_foms with searchField "searchText", filterFields ["statusId"].
+
+2. convex/fomsStatus.ts
+   - listFomsStatuses: query, no args; returns all fomsStatus rows.
+   - seedFomsStatus: public mutation, no args; idempotent insert of R-Requested, D-Denied, C-Cancelled, A-Approved.
+
+3. convex/fomsRequests.ts
+   - listFomsRequests: query with paginationOpts, optional statusId, dateFrom, dateTo, searchQuery.
+     - When searchQuery is non-empty: uses withSearchIndex("search_foms"); optional date range applied via .filter() (requestedDatetime gte/lte).
+     - When no search: uses withIndex for status and/or date (by_statusId_and_requestedDatetime, by_statusId, by_requestedDatetime, or by_createDatetime).
+     - Returns { page, isDone, continueCursor } with each item including statusValue (lookup from fomsStatus).
+   - getFomsRequest: query by id; returns single request with statusValue or null.
+   - createFomsRequest: mutation with required/optional args per plan; sets statusId "R", createDatetime to Date.now(), and searchText to concatenation of text fields for search.
+   - updateFomsRequestStatus: mutation (id, statusId, optional deniedDescription); requires authenticated user (Clerk); when statusId "D", deniedDescription required; patches document and updates searchText when deniedDescription is set.
+
+4. Verification
+   - Ran: bunx convex dev --once
+   - Fixed: Search queries do not support .order(); removed .order("desc") from the search path (results stay in relevance order).
+   - Result: Convex functions ready; typecheck and push succeeded.
+
+--------------------------------------------------------------------------------
+LEARNINGS
+--------------------------------------------------------------------------------
+- Convex full-text search: Exactly one searchField per index; filterFields optional for equality filters. Search results are always in relevance order; .order() is not available on the query after withSearchIndex. For "search across all columns," we maintain a single searchText field (concatenation of requestor, facility, description, contact, etc.) and set it on create (and when denying, for deniedDescription).
+- Empty search query: When the user has not typed anything, do not use the search index (it would not return all documents as expected). listFomsRequests branches: if searchQuery is present and non-empty, use withSearchIndex; otherwise use regular indexes.
+- Index naming and ordering: Per .cursor/rules/convex_rules.mdc, index fields must be queried in the same order as defined. For status + date range we use by_statusId_and_requestedDatetime so we can eq statusId then gte/lte on requestedDatetime.
+- Validators: All Convex functions use args and returns validators. We use v.optional(v.string()) for optional fields and v.null() for mutations that return nothing. No undefined in returns.
+- Auth: updateFomsRequestStatus uses ctx.auth.getUserIdentity() and throws if null so only authenticated (Clerk) users can approve/deny.
+- Seed: Public idempotent mutation (seedFomsStatus) allows one-time run from Convex dashboard or from the app; no need to expose internal functions.
+
+--------------------------------------------------------------------------------
+NEXT STEPS (from FOMS plan §8)
+--------------------------------------------------------------------------------
+2. Routes & layout: Add foms/index.tsx, foms/new.tsx, foms/$requestId.tsx; update root layout/nav.
+3. Create flow: Build create form on foms/new.tsx with validation and createFomsRequest.
+4. List & search/filters: Grid and cards on foms/index.tsx; search input + quick filters.
+5. Detail page: Read-only foms/$requestId.tsx.
+6. Approve/deny: Buttons on cards (status Requested only); denial modal.
+7. Polish: FRONTENDDESIGNSKILL.MD (typography, color, motion).
+
+--------------------------------------------------------------------------------
+HOW TO RUN SEED (once)
+--------------------------------------------------------------------------------
+From Convex dashboard: Functions → fomsStatus → seedFomsStatus → Run with {}.
+Or from the app (e.g. a one-time effect or admin button): useMutation(api.fomsStatus.seedFomsStatus)({}).
+
+================================================================================
+@
