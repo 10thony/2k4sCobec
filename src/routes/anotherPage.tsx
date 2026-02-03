@@ -25,7 +25,7 @@ function AnotherPage() {
         <p>Click the button below to add a random number to the database.</p>
         <p>
           <button
-            className="bg-dark dark:bg-light text-light dark:text-dark text-sm px-4 py-2 rounded-md border-2"
+            className="bg-primary text-primary-foreground text-sm px-4 py-2 rounded-md border border-border hover:opacity-90 transition-opacity"
             onClick={() => {
               callMyAction({
                 first: Math.round(Math.random() * 100),

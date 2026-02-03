@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@convex-dev/eslint-plugin": "^1.1.1",
+    "@types/node": "^22.0.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/eslint-config": "^0.3.4",
     "@types/react": "^19.2.10",

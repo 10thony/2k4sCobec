@@ -4,11 +4,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @layer base {
-  html,
-  body {
-    @apply text-gray-900 bg-gray-50 dark:bg-gray-950 dark:text-gray-200;
+  html {
+    @apply antialiased;
   }
-
+  body {
+    @apply min-h-screen bg-background text-foreground;
+  }
   .using-mouse * {
     outline: none !important;
   }
@@ -127,8 +128,5 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }

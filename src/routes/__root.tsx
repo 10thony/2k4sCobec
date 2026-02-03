@@ -3,13 +3,26 @@ import {
   Outlet,
   Scripts,
   createRootRouteWithContext,
+  useRouteContext,
 } from '@tanstack/react-router'
 import * as React from 'react'
 import type { QueryClient } from '@tanstack/react-query'
+import type { ConvexReactClient } from 'convex/react'
+import type { ConvexQueryClient } from '@convex-dev/react-query'
+import {
+  ClerkProvider,
+  SignInButton,
+  UserButton,
+  useAuth,
+} from '@clerk/tanstack-start'
+import { ConvexProviderWithClerk } from 'convex/react-clerk'
+import { Authenticated, AuthLoading, Unauthenticated } from 'convex/react'
 import appCss from '~/styles/app.css?url'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
+  convexClient: ConvexReactClient
+  convexQueryClient: ConvexQueryClient
 }>()({
   head: () => ({
     meta: [
@@ -52,10 +65,58 @@ export const Route = createRootRouteWithContext<{
 })
 
 function RootComponent() {
+  const context = useRouteContext({ from: Route.id })
+  const publishableKey = (import.meta as any).env.VITE_CLERK_PUBLISHABLE_KEY
+  const frontendApi = (import.meta as any).env.VITE_CLERK_FRONTEND_API_URL
+
+  if (!publishableKey) {
+    return (
+      <RootDocument>
+        <div className="p-8 text-destructive">
+          Missing VITE_CLERK_PUBLISHABLE_KEY. Add it to .env.local and restart.
+        </div>
+      </RootDocument>
+    )
+  }
+
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <ClerkProvider
+      publishableKey={publishableKey}
+      {...(frontendApi ? { frontendApi } : {})}
+    >
+      <ConvexProviderWithClerk
+        client={context.convexClient}
+        useAuth={useAuth}
+      >
+        <RootDocument>
+          <Authenticated>
+            <header className="border-b border-border px-4 py-2 flex items-center justify-between">
+              <span className="font-medium">2k4sCobec</span>
+              <UserButton afterSignOutUrl="/" />
+            </header>
+            <Outlet />
+          </Authenticated>
+          <Unauthenticated>
+            <div className="min-h-screen flex flex-col items-center justify-center gap-6 p-8">
+              <h1 className="text-2xl font-semibold">Sign in to continue</h1>
+              <SignInButton mode="modal">
+                <button
+                  type="button"
+                  className="bg-primary text-primary-foreground px-4 py-2 rounded-md border border-border hover:opacity-90 transition-opacity"
+                >
+                  Sign in
+                </button>
+              </SignInButton>
+            </div>
+          </Unauthenticated>
+          <AuthLoading>
+            <div className="min-h-screen flex items-center justify-center">
+              <p className="text-muted-foreground">Loading…</p>
+            </div>
+          </AuthLoading>
+        </RootDocument>
+      </ConvexProviderWithClerk>
+    </ClerkProvider>
   )
 }
 
@@ -65,7 +126,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="antialiased min-h-screen">
         {children}
         <Scripts />
       </body>

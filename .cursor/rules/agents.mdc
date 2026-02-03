@@ -1,0 +1,32 @@
+---
+description: Agent guidelines for this project — stack, conventions, and verification
+alwaysApply: true
+---
+
+# Agent guidelines (AGENTS.md)
+
+When working in this repo, follow the project’s **AGENTS.md** at the repo root.
+
+## Stack
+
+- **Runtime**: Bun  
+- **Backend**: Convex (`convex/`)  
+- **Frontend**: TanStack Start (`src/routes/`), React, TypeScript  
+- **UI**: shadcn/ui, Tailwind CSS v4 (`@tailwindcss/vite`)  
+- **Auth**: Clerk (optional)
+
+## Conventions
+
+- **Styling**: Tailwind utility classes; use `cn()` from `~/lib/utils` when merging classes. Global styles/theme in `src/styles/app.css`.
+- **Convex**: Follow `.cursor/rules/convex_rules.mdc` (schema, validators, function registration, etc.).
+- **shadcn**: Add components with `bunx shadcn@latest add <component>`, import from `~/components/ui/<component>`.
+
+## Verification
+
+- After changing Convex code (schema or functions), run **`bunx convex dev --once`** to verify and sync.
+
+## Scripts
+
+- `bun run dev` — Vite + Convex (port 3000)  
+- `bun run build` / `bun run lint` / `bun run format` — build, lint, format  
+- Env: `.env.local` from `.env.example`; `VITE_CONVEX_URL` required.

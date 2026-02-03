@@ -28,7 +28,7 @@ function Home() {
         </p>
         <p>
           <button
-            className="bg-dark dark:bg-light text-light dark:text-dark text-sm px-4 py-2 rounded-md border-2"
+            className="bg-primary text-primary-foreground text-sm px-4 py-2 rounded-md border border-border hover:opacity-90 transition-opacity"
             onClick={() => {
               void addNumber({ value: Math.floor(Math.random() * 10) })
             }}
