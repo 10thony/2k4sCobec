@@ -5,7 +5,7 @@ import tsConfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
 import viteReact from '@vitejs/plugin-react'
 
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   server: {
     port: 3000,
   },
@@ -18,4 +18,13 @@ export default defineConfig({
     netlify(),
     viteReact(),
   ],
-})
+  // Keep server-only env out of client bundle so Netlify secrets scanner doesn't fail.
+  // Clerk/Convex deps can read process.env; only client build gets empty value.
+  ...(isSsrBuild
+    ? {}
+    : {
+        define: {
+          'process.env.CLERK_JWT_ISSUER_DOMAIN': JSON.stringify(''),
+        },
+      }),
+}))

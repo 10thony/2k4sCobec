@@ -3,91 +3,85 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─── Palette: Amethyst (primary dark-mode base) ─── */
+/* ─── Palette: Bold Editorial — Deep Space Blue, Flag Red, Tangerine, Gold, Custard ─── */
 :root {
-  --color-dark-amethyst-50: #f3e5ff;
-  --color-dark-amethyst-100: #e6ccff;
-  --color-dark-amethyst-200: #ce99ff;
-  --color-dark-amethyst-300: #b566ff;
-  --color-dark-amethyst-400: #9c33ff;
-  --color-dark-amethyst-500: #8400ff;
-  --color-dark-amethyst-600: #6900cc;
-  --color-dark-amethyst-700: #4f0099;
-  --color-dark-amethyst-800: #350066;
-  --color-dark-amethyst-900: #1a0033;
-  --color-dark-amethyst-950: #120024;
+  /* Deep Space Blue — primary dark base, authoritative navy */
+  --color-deep-space-50: #a7e0ff;
+  --color-deep-space-100: #50c2ff;
+  --color-deep-space-200: #00a0f7;
+  --color-deep-space-300: #00679f;
+  --color-deep-space-400: #003049;
+  --color-deep-space-500: #003049;
+  --color-deep-space-600: #002539;
+  --color-deep-space-700: #001c2b;
+  --color-deep-space-800: #00131d;
+  --color-deep-space-900: #00090e;
+  --color-deep-space-950: #000508;
 
-  --color-indigo-ink-50: #f3e7fd;
-  --color-indigo-ink-100: #e6d0fb;
-  --color-indigo-ink-200: #cda1f7;
-  --color-indigo-ink-300: #b571f4;
-  --color-indigo-ink-400: #9c42f0;
-  --color-indigo-ink-500: #8313ec;
-  --color-indigo-ink-600: #690fbd;
-  --color-indigo-ink-700: #4f0b8e;
-  --color-indigo-ink-800: #34085e;
-  --color-indigo-ink-900: #1a042f;
-  --color-indigo-ink-950: #120321;
+  /* Flag Red — destructive, urgent, attention-grabbing */
+  --color-flag-red-50: #f7d4d4;
+  --color-flag-red-100: #efa9a9;
+  --color-flag-red-200: #e77e7e;
+  --color-flag-red-300: #df5353;
+  --color-flag-red-400: #d62828;
+  --color-flag-red-500: #d62828;
+  --color-flag-red-600: #ac2020;
+  --color-flag-red-700: #811818;
+  --color-flag-red-800: #561010;
+  --color-flag-red-900: #2b0808;
+  --color-flag-red-950: #1a0505;
 
-  --color-indigo-velvet-50: #f2e9fc;
-  --color-indigo-velvet-100: #e5d3f8;
-  --color-indigo-velvet-200: #cca7f1;
-  --color-indigo-velvet-300: #b27bea;
-  --color-indigo-velvet-400: #994fe3;
-  --color-indigo-velvet-500: #7f22dd;
-  --color-indigo-velvet-600: #661cb0;
-  --color-indigo-velvet-700: #4c1584;
-  --color-indigo-velvet-800: #330e58;
-  --color-indigo-velvet-900: #19072c;
-  --color-indigo-velvet-950: #12051f;
+  /* Vivid Tangerine — primary accent, energetic action color */
+  --color-tangerine-50: #ffe5ca;
+  --color-tangerine-100: #ffcc95;
+  --color-tangerine-200: #ffb260;
+  --color-tangerine-300: #ff982b;
+  --color-tangerine-400: #f77f00;
+  --color-tangerine-500: #f77f00;
+  --color-tangerine-600: #c46500;
+  --color-tangerine-700: #934c00;
+  --color-tangerine-800: #623300;
+  --color-tangerine-900: #311900;
+  --color-tangerine-950: #1f1000;
 
-  --color-royal-violet-50: #f3eafa;
-  --color-royal-violet-100: #e7d5f6;
-  --color-royal-violet-200: #ceacec;
-  --color-royal-violet-300: #b682e3;
-  --color-royal-violet-400: #9d59d9;
-  --color-royal-violet-500: #852fd0;
-  --color-royal-violet-600: #6a26a6;
-  --color-royal-violet-700: #501c7d;
-  --color-royal-violet-800: #351353;
-  --color-royal-violet-900: #1b092a;
-  --color-royal-violet-950: #13071d;
+  /* Sunflower Gold — secondary accent, warmth and optimism */
+  --color-gold-50: #fef3db;
+  --color-gold-100: #fee6b7;
+  --color-gold-200: #fdda92;
+  --color-gold-300: #fdcd6e;
+  --color-gold-400: #fcbf49;
+  --color-gold-500: #fcbf49;
+  --color-gold-600: #fbab0a;
+  --color-gold-700: #c18203;
+  --color-gold-800: #815602;
+  --color-gold-900: #402b01;
+  --color-gold-950: #281b01;
 
-  --color-lavender-purple-50: #f3eafb;
-  --color-lavender-purple-100: #e7d4f7;
-  --color-lavender-purple-200: #cfa9ef;
-  --color-lavender-purple-300: #b87ee7;
-  --color-lavender-purple-400: #a054de;
-  --color-lavender-purple-500: #8829d6;
-  --color-lavender-purple-600: #6d21ab;
-  --color-lavender-purple-700: #521881;
-  --color-lavender-purple-800: #361056;
-  --color-lavender-purple-900: #1b082b;
-  --color-lavender-purple-950: #13061e;
+  /* Vanilla Custard — light neutral, soft backgrounds and text */
+  --color-custard-50: #fbf9f1;
+  --color-custard-100: #f7f4e3;
+  --color-custard-200: #f3eed4;
+  --color-custard-300: #eee8c6;
+  --color-custard-400: #eae2b7;
+  --color-custard-500: #eae2b7;
+  --color-custard-600: #d8c977;
+  --color-custard-700: #c2ae38;
+  --color-custard-800: #827426;
+  --color-custard-900: #413a13;
+  --color-custard-950: #2a250c;
 
-  --color-mauve-magic-50: #f4e5ff;
-  --color-mauve-magic-100: #e9ccff;
-  --color-mauve-magic-200: #d399ff;
-  --color-mauve-magic-300: #bd66ff;
-  --color-mauve-magic-400: #a733ff;
-  --color-mauve-magic-500: #9000ff;
-  --color-mauve-magic-600: #7400cc;
-  --color-mauve-magic-700: #570099;
-  --color-mauve-magic-800: #3a0066;
-  --color-mauve-magic-900: #1d0033;
-  --color-mauve-magic-950: #140024;
-
-  --color-mauve-50: #f6e5ff;
-  --color-mauve-100: #ecccff;
-  --color-mauve-200: #da99ff;
-  --color-mauve-300: #c766ff;
-  --color-mauve-400: #b433ff;
-  --color-mauve-500: #a200ff;
-  --color-mauve-600: #8100cc;
-  --color-mauve-700: #610099;
-  --color-mauve-800: #410066;
-  --color-mauve-900: #200033;
-  --color-mauve-950: #170024;
+  /* Dusty Denim — softer blue for cards/surfaces in dark mode */
+  --color-denim-50: #e3e8ee;
+  --color-denim-100: #c7d1dd;
+  --color-denim-200: #abb9cd;
+  --color-denim-300: #8fa2bc;
+  --color-denim-400: #748cab;
+  --color-denim-500: #748cab;
+  --color-denim-600: #566e8f;
+  --color-denim-700: #40536b;
+  --color-denim-800: #2b3747;
+  --color-denim-900: #151c24;
+  --color-denim-950: #0d1219;
 }
 
 /* FOMS: distinctive typography — DM Sans (loaded via head link in __root) */
@@ -149,93 +143,110 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* ─── Light Mode: Warm Custard base with Deep Space accents ─── */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: var(--color-custard-50);
+  --foreground: var(--color-deep-space-500);
+  --card: var(--color-custard-100);
+  --card-foreground: var(--color-deep-space-500);
+  --popover: var(--color-custard-50);
+  --popover-foreground: var(--color-deep-space-500);
+  --primary: var(--color-deep-space-500);
+  --primary-foreground: var(--color-custard-50);
+  --secondary: var(--color-custard-300);
+  --secondary-foreground: var(--color-deep-space-600);
+  --muted: var(--color-custard-200);
+  --muted-foreground: var(--color-deep-space-300);
+  --accent: var(--color-tangerine-400);
+  --accent-foreground: var(--color-deep-space-900);
+  --destructive: var(--color-flag-red-500);
+  --border: var(--color-custard-400);
+  --input: var(--color-custard-300);
+  --ring: var(--color-tangerine-400);
+  --chart-1: var(--color-tangerine-400);
+  --chart-2: var(--color-gold-500);
+  --chart-3: var(--color-deep-space-400);
+  --chart-4: var(--color-flag-red-400);
+  --chart-5: var(--color-custard-600);
+  --sidebar: var(--color-custard-100);
+  --sidebar-foreground: var(--color-deep-space-500);
+  --sidebar-primary: var(--color-tangerine-400);
+  --sidebar-primary-foreground: var(--color-deep-space-900);
+  --sidebar-accent: var(--color-gold-300);
+  --sidebar-accent-foreground: var(--color-deep-space-700);
+  --sidebar-border: var(--color-custard-400);
+  --sidebar-ring: var(--color-tangerine-400);
 }
 
-/* Dark theme: indigo-velvet + mauve-magic — refined, non-generic dark mode */
+/* ─── Dark Mode: Deep Space Navy with Tangerine + Gold accents ─── */
 .dark {
-  --background: var(--color-indigo-velvet-950);
-  --foreground: var(--color-indigo-velvet-50);
-  --card: var(--color-indigo-velvet-900);
-  --card-foreground: var(--color-indigo-velvet-50);
-  --popover: var(--color-indigo-velvet-900);
-  --popover-foreground: var(--color-indigo-velvet-50);
-  --primary: var(--color-mauve-magic-400);
-  --primary-foreground: var(--color-indigo-velvet-950);
-  --secondary: var(--color-indigo-velvet-800);
-  --secondary-foreground: var(--color-indigo-velvet-100);
-  --muted: var(--color-indigo-velvet-800);
-  --muted-foreground: var(--color-indigo-velvet-300);
-  --accent: var(--color-indigo-velvet-800);
-  --accent-foreground: var(--color-indigo-velvet-100);
-  --destructive: oklch(0.65 0.22 25);
-  --border: var(--color-indigo-velvet-700);
-  --input: var(--color-indigo-velvet-800);
-  --ring: var(--color-mauve-magic-400);
-  --chart-1: var(--color-mauve-magic-400);
-  --chart-2: var(--color-indigo-velvet-400);
-  --chart-3: var(--color-royal-violet-400);
-  --chart-4: var(--color-lavender-purple-400);
-  --chart-5: var(--color-dark-amethyst-400);
-  --sidebar: var(--color-indigo-velvet-900);
-  --sidebar-foreground: var(--color-indigo-velvet-50);
-  --sidebar-primary: var(--color-mauve-magic-400);
-  --sidebar-primary-foreground: var(--color-indigo-velvet-950);
-  --sidebar-accent: var(--color-indigo-velvet-800);
-  --sidebar-accent-foreground: var(--color-indigo-velvet-100);
-  --sidebar-border: var(--color-indigo-velvet-700);
-  --sidebar-ring: var(--color-mauve-magic-400);
+  --background: var(--color-denim-900);
+  --foreground: var(--color-custard-100);
+  --card: var(--color-denim-700);
+  --card-foreground: var(--color-custard-50);
+  --popover: var(--color-denim-700);
+  --popover-foreground: var(--color-custard-50);
+  --primary: var(--color-tangerine-400);
+  --primary-foreground: var(--color-denim-900);
+  --secondary: var(--color-denim-800);
+  --secondary-foreground: var(--color-custard-100);
+  --muted: var(--color-denim-800);
+  --muted-foreground: var(--color-custard-300);
+  --accent: var(--color-gold-400);
+  --accent-foreground: var(--color-denim-900);
+  --destructive: var(--color-flag-red-400);
+  --border: var(--color-denim-600);
+  --input: var(--color-denim-800);
+  --ring: var(--color-tangerine-400);
+  --chart-1: var(--color-tangerine-400);
+  --chart-2: var(--color-gold-400);
+  --chart-3: var(--color-flag-red-400);
+  --chart-4: var(--color-custard-500);
+  --chart-5: var(--color-denim-300);
+  --sidebar: var(--color-denim-800);
+  --sidebar-foreground: var(--color-custard-100);
+  --sidebar-primary: var(--color-tangerine-400);
+  --sidebar-primary-foreground: var(--color-denim-900);
+  --sidebar-accent: var(--color-gold-500);
+  --sidebar-accent-foreground: var(--color-denim-900);
+  --sidebar-border: var(--color-denim-600);
+  --sidebar-ring: var(--color-tangerine-400);
 }
 
-/* Atmospheric background for dark: subtle gradient mesh (no purple-on-white cliché) */
+/* Atmospheric background for dark: dusty denim gradient with warm accent glows */
 .dark body {
   background-image:
     radial-gradient(
       ellipse 120% 80% at 50% -20%,
-      var(--color-indigo-velvet-900) 0%,
+      var(--color-denim-800) 0%,
       transparent 50%
     ),
     radial-gradient(
       ellipse 80% 50% at 100% 50%,
-      var(--color-mauve-magic-950) 0%,
+      color-mix(in srgb, var(--color-tangerine-950) 25%, transparent) 0%,
       transparent 45%
     ),
     radial-gradient(
       ellipse 60% 40% at 0% 80%,
-      var(--color-indigo-ink-950) 0%,
+      color-mix(in srgb, var(--color-gold-950) 15%, transparent) 0%,
       transparent 45%
+    );
+  background-attachment: fixed;
+}
+
+/* Light mode subtle texture — warm gradient overlay */
+body:not(.dark) {
+  background-image:
+    radial-gradient(
+      ellipse 100% 60% at 50% 0%,
+      color-mix(in srgb, var(--color-gold-100) 40%, transparent) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 100% 100%,
+      color-mix(in srgb, var(--color-tangerine-50) 30%, transparent) 0%,
+      transparent 50%
     );
   background-attachment: fixed;
 }
