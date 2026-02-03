@@ -6,6 +6,10 @@
   # Convex: deploy backend then build frontend (sets VITE_CONVEX_URL for production)
   command = "bunx convex deploy --cmd \"bun run build\""
   publish = "dist/client"
+  # VITE_* vars are inlined by Vite into client/SSR bundles by design (public config).
+  # Tell Netlify secrets scanner to allow these; they are not server secrets.
+  [build.environment]
+    SECRETS_SCAN_OMIT_KEYS = "VITE_CLERK_PUBLISHABLE_KEY,VITE_CONVEX_SITE_URL,VITE_CLERK_FRONTEND_API_URL,VITE_CONVEX_URL"
 
 # TanStack Start SSR: Netlify plugin in vite.config.ts handles serverless functions.
 # No additional redirects required for client-side routing; the app is SSR.
