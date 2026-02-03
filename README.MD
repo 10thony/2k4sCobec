@@ -51,7 +51,7 @@ Styling is done with **Tailwind CSS v4** via `@tailwindcss/vite`. Global styles 
 
 ## Deploy to Netlify
 
-The app is configured for Netlify (TanStack Start + Convex). See **[docs/NETLIFY_DEPLOY.md](docs/NETLIFY_DEPLOY.md)** for build settings, `CONVEX_DEPLOY_KEY`, and optional deploy previews.
+The app is configured for Netlify (TanStack Start + Convex) and uses **Bun** (not npm). Netlify will use Bun when it sees `bun.lock`. See **[docs/NETLIFY_DEPLOY.md](docs/NETLIFY_DEPLOY.md)** for build settings, `CONVEX_DEPLOY_KEY`, and optional deploy previews.
 
 ## Adding shadcn components
 

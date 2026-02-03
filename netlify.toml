@@ -1,9 +1,10 @@
 # Netlify build configuration for TanStack Start + Convex
-# See docs/NETLIFY_DEPLOY.md for setup steps.
+# This project uses Bun (not npm). See docs/NETLIFY_DEPLOY.md for setup steps.
+# Netlify uses Bun when it detects bun.lock; install and build run with bun.
 
 [build]
   # Convex: deploy backend then build frontend (sets VITE_CONVEX_URL for production)
-  command = "npx convex deploy --cmd \"bun run build\""
+  command = "bunx convex deploy --cmd \"bun run build\""
   publish = "dist/client"
 
 # TanStack Start SSR: Netlify plugin in vite.config.ts handles serverless functions.
